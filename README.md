@@ -87,10 +87,15 @@ JWT (JSON Web Token) authentication will be used. After logging in, users will r
 1. **Clone the Repo:**
    ```bash
    git clone https://github.com/username/LibraryApp.git
-2.Create a Virtual Environment and Install Dependencies:
+2.**Create a Virtual Environment and Install Dependencies:
 python -m venv env
-source env/bin/activate  # For Windows: env\Scripts\activate
+source env/bin/activate  
+
+# For Windows: env\Scripts\activate
 pip install -r requirements.txt
+
 3.Set Up .env File
 Create a .env file and enter your database credentials.
-4.Run Migrations:python manage.py runserver
+
+4.Run Migrations:
+python manage.py runserver
