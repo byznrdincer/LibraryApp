@@ -73,10 +73,21 @@ WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+        
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'libraryapp_db',  # Veritabanı adı
+        'USER': 'root',  # Kullanıcı adı
+        'PASSWORD': '1234',  # Parola
+        'HOST': 'localhost',  # Veya uzak bir sunucu adresi
+        'PORT': '3306',  # MySQL'in varsayılan portu
     }
 }
 
