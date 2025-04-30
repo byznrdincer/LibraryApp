@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'library_core',
 ]
 
 MIDDLEWARE = [
@@ -83,11 +84,11 @@ WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'libraryapp_db',  # Veritabanı adı
-        'USER': 'root',  # Kullanıcı adı
-        'PASSWORD': '1234',  # Parola
-        'HOST': 'localhost',  # Veya uzak bir sunucu adresi
-        'PORT': '3306',  # MySQL'in varsayılan portu
+        'NAME': 'library_app',  # Veritabanı ismini doğru yazdığından emin ol
+        'USER': 'root',  # Kullanıcı adı doğru mu?
+        'PASSWORD': '12345',  # Şifre doğru mu?
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
