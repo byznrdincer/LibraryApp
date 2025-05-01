@@ -46,18 +46,20 @@ class employees(models.Model):
     def __str__(self):
         return self.emp_name
 
-    
 class issued_status(models.Model):
-    issued_id = models.CharField(max_length=10, primary_key=True)
     issued_member = models.ForeignKey(members, on_delete=models.CASCADE)
-    issued_book_name = models.CharField(max_length=200)
-    issued_date = models.DateField()
     issued_book = models.ForeignKey(books, on_delete=models.CASCADE)
     issued_emp = models.ForeignKey(employees, on_delete=models.CASCADE)
+    
+    issued_id = models.CharField(max_length=10, primary_key=True)
     issued_book_isbn = models.CharField(max_length=20)
+    issued_book_name = models.CharField(max_length=200)
+    issued_date = models.DateField()
 
     def __str__(self):
-        return self.issued_id  
+        return self.issued_id
+  
+
 class return_status(models.Model):
     return_id = models.CharField(max_length=10, primary_key=True)
     issued = models.ForeignKey(issued_status, on_delete=models.CASCADE)
