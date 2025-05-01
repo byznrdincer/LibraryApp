@@ -7,7 +7,7 @@ class members(models.Model):
     reg_date = models.DateField()
     
     def __str__(self):
-        return self.member_name
+     return self.member_name
 
 
 class books(models.Model):
@@ -20,16 +20,17 @@ class books(models.Model):
     publisher = models.CharField(max_length=200)
     
     def __str__(self):
-        return self.title
-    
+     return self.book_title
+
 class branch(models.Model):
     branch_id=models.CharField(max_length=10, primary_key=True)
     manager_id=models.CharField(max_length=10)
     branch_address=models.CharField(max_length=100)
     contact_no=models.CharField(max_length=15)
     
-    def _str_(self):
-        return self.branch_id
+    def __str__(self):
+      return self.branch_id
+
 
 class employees(models.Model):
     ROLE_CHOICES = [
