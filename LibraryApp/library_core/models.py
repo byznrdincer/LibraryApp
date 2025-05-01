@@ -11,8 +11,8 @@ class members(models.Model):
 
 
 class books(models.Model):
-    isbn=models.CharField(max_length=13)
-    title=models.CharField(max_length=200)
+    isbn=models.CharField(max_length=20)
+    book_title=models.CharField(max_length=200)
     author=models.CharField(max_length=200)
     category=models.CharField(max_length=100)
     rental_price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -30,17 +30,22 @@ class branch(models.Model):
     
     def _str_(self):
         return self.branch_id
-    
+
 class employees(models.Model):
+    ROLE_CHOICES = [
+        ('SUPER_ADMIN', 'Super Admin'),
+        ('ADMIN', 'Admin'),
+    ]
+
     emp_id = models.CharField(max_length=10, primary_key=True)
     emp_name = models.CharField(max_length=100)
-    position = models.CharField(max_length=50)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     branch = models.ForeignKey(branch, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='ADMIN')  # Varsayılan olarak 'ADMIN'
 
     def __str__(self):
         return self.emp_name
-    
+
     
 class issued_status(models.Model):
     issued_id = models.CharField(max_length=10, primary_key=True)
@@ -49,6 +54,7 @@ class issued_status(models.Model):
     issued_date = models.DateField()
     issued_book = models.ForeignKey(books, on_delete=models.CASCADE)
     issued_emp = models.ForeignKey(employees, on_delete=models.CASCADE)
+    issued_book_isbn = models.CharField(max_length=20)
 
     def __str__(self):
         return self.issued_id  
