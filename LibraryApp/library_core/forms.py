@@ -1,12 +1,13 @@
 from django import forms
-from .models import Book,StudentExtra,IssuedBook
 from django.contrib.auth.models import User
-
 from LibraryApp.library_core import models
+
+
+
 
 class BookForm(forms.ModelForm):
     class Meta:
-        model=Book
+        model=models.Book
         fields=['name','isbn','author','category']
         
 class StudentUserForm(forms.ModelForm):
@@ -17,12 +18,12 @@ class StudentUserForm(forms.ModelForm):
 
 class StdentExtra(forms.ModelForm):
     class Meta:
-        model=StudentExtra
+        model=models.StudentExtra
         fields=['enrollment','branch']
 
 class IssuedBook(forms.ModelForm):
     class Meta:
-        model=IssuedBook
+        model=models.IssuedBook
         fields='_all_'
 class IssuedBookForm(forms.Form):
     #to_field_name value will be stored when form is submitted.....__str__ method of book model will be shown there in html
