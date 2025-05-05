@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import include
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
+
 
 from LibraryApp.library_core import views
 
