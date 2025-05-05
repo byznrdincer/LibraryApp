@@ -16,7 +16,7 @@ class StudentUserForm(forms.ModelForm):
         fields=['first_name','last_name','username','password']
 
 
-class StdentExtra(forms.ModelForm):
+class StudentExtraForm(forms.ModelForm):
     class Meta:
         model=models.StudentExtra
         fields=['enrollment','branch']
