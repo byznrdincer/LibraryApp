@@ -36,13 +36,14 @@ def studentsignup_view(request):
         form2 = forms.StudentExtraForm(request.POST)
         
         if form1.is_valid() and form2.is_valid():
-            user = form1.save()
+            user = form1.save(commit=False)
             user.set_password(user.password)
             user.save()
+            
             f2 = form2.save(commit=False)
             f2.user = user
-            user2 = f2.save()
-            
+            f2.save()
+
             my_student_group = Group.objects.get_or_create(name='STUDENT')
             my_student_group[0].user_set.add(user)
 
@@ -51,16 +52,26 @@ def studentsignup_view(request):
     return render(request, 'library_core/studentsignup.html', context=mydict)
 
 
+def is_admin(user):
+    if user.is_superuser or user.is_staff:
+        return True
+    else:
+        return False
+def is_student(user):
+    return user.groups.filter(name='STUDENT').exists()
 
-
+def afterlogin_view(request):
+    if is_admin(request.user):
+        return render(request,'library/adminafterlogin.html')
+    
+    elif(is_student(request.user)):
+        return render(request,'library/studentafterlogin.html')
 
 
 
 
 
 def returnbook(request):
-    pass
-def afterlogin_view(request):
     pass
 def addbook_view(request):
     pass
