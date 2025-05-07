@@ -37,7 +37,7 @@ def studentsignup_view(request):
         
         if form1.is_valid() and form2.is_valid():
             user = form1.save(commit=False)
-            user.set_password(user.password)
+            user.set_password(user.password) #password hashing
             user.save()
             
             f2 = form2.save(commit=False)
@@ -60,21 +60,34 @@ def is_admin(user):
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
+
 def afterlogin_view(request):
     if is_admin(request.user):
-        return render(request,'library/adminafterlogin.html')
+        return render(request,'library_core/adminafterlogin.html')
     
     elif(is_student(request.user)):
-        return render(request,'library/studentafterlogin.html')
+        return render(request,'library_core/studentafterlogin.html')
 
 
+def returnbook(request, id):
+    issued_book = models.IssuedBook.objects.get(pk=id)
+    issued_book.status = "Returned"
+    issued_book.save()
+    return redirect('viewissuedbookbystudent')
 
 
+@login_required(login_url='adminlogin')
+@user_passes_test(is_admin)
 
-def returnbook(request):
-    pass
 def addbook_view(request):
-    pass
+  form=forms.BookForm()  
+  if request.method=='POST':
+      form=forms.BookForm(request.POST)
+      if form.is_valid():
+        user=form.save()
+      return render(request,'library/bookadded.html')
+  return render(request,'library/addbook.html',{'form':form})
+
 def viewbook_view(request):
     pass
 def issuebook_view(request):
