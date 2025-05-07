@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import Group
 from datetime import date
+from django.core.mail import send_mail
 from . import forms, models
 
 # Ana sayfa
@@ -103,6 +104,17 @@ def issuebook_view(request):
             obj.enrollment = request.POST.get('enrollment2')
             obj.isbn = request.POST.get('isbn2')
             obj.save()
+
+            # Kitap ödünç verildikten sonra e-posta gönder
+            student_email = models.StudentExtra.objects.get(enrollment=obj.enrollment).user.email
+            book_name = models.Book.objects.get(isbn=obj.isbn).name
+            send_mail(
+                subject='Kitap Teslim Bilgisi',
+                message=f"'{book_name}' adlı kitabı aldınız. Teslim süresi 30 gündür.",
+                from_email='seninmailin@gmail.com',
+                recipient_list=[student_email],
+                fail_silently=False,
+            )
             return render(request, 'library/bookissued.html')
     return render(request, 'library_core/issuebook.html', {'form': form})
 
