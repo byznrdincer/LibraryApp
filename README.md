@@ -19,7 +19,6 @@ LibraryApp is designed to create an easy-to-use system where users can borrow an
 ### Backend
 - **Python**
 - **Django** (REST API)
-- **FastAPI**
 - **MySQL**
 - **JWT** (Authentication)
 - **Postman** (API testing)
@@ -55,14 +54,10 @@ LibraryApp is designed to create an easy-to-use system where users can borrow an
 ---
 
 ## 👤 User Roles
-
-### 🟣 Super Admin
-- Can manage all system settings.
-- Can manage users and books.
-
 ### 🔵 Admin
 - Can manage books.
-- Cannot change user information.
+- Can manage users (add, delete, update).
+- Can manage system settings.
 
 ### 🟢 Student
 - Can borrow books.
