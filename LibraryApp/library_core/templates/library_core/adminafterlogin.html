@@ -33,23 +33,30 @@
 </style>
   </head>
   <body>
-    {% include "library/navbarstudent.html" %}
+    {% include "library_core/navbaradmin.html" %}
     <br>
     <br>
     <center><h3 style=" margin-bottom: 0px;"class = 'alert alert-success'>Welcome to Online library !</h3></center>
     <div class="jumbotron"   style="    margin-bottom: 0px;">
     <h1 class="display-4">Hello {{user.first_name}} !</h1>
-    <p class="lead">As you are Student, you can see how many book you have taken from library with fine and many more ...!
+    <p class="lead">As you are Admin, you can add a book to library, view available book in library,
+       Issue books to students,
+      View issued book to students and many more ... !
+
     </p>
     <hr class="my-4">
     <p>Option Available For You</p>
     <div class="options" style="text-align:center">
-      <a href="viewissuedbookbystudent" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View issued book to you</a><br><br>
-        </div>
+      <a href="addbook" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Add Book To Library</a><br><br>
+      <a href="viewbook" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Available Book</a><br><br>
+      <a href="issuebook" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Issue New Book</a><br><br>
+      <a href="viewissuedbook" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Issued Book</a><br><br>
+      <a href="viewstudent" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Student</a>
+    </div>
 
     </div>
 
 
-    {% include "library/footer.html" %}
+    
   </body>
 </html>

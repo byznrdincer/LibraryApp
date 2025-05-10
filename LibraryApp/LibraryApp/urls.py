@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
 
-from LibraryApp.library_core import views
+from library_core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -12,9 +12,9 @@
 
 
     <style type="text/css">
-    	body{
+    	body {
     		color: #aa082e;
-    		background-color: : #b6bde7 !important;
+    		background: #c5acb0;
     		font-family: 'Roboto', sans-serif;
     	}
         .form-control {
@@ -94,14 +94,14 @@
 
   </head>
   <body style="background-color:#b6bde7;">
-    {% include "library/navbaradmin.html" %}
+    {% include "library_core/navbaradmin.html" %}
     <br>
     <br>
-<center><h3 style=" margin-bottom: 0px;"class = 'alert alert-success'>ADD BOOK IN LIBRARY !</h3></center>
+<center><h3 style=" margin-bottom: 0px;"class = 'alert alert-success'>ISSUE BOOK TO STUDENT !</h3></center>
     <div class="signup-form">
         <form  method="post" class="form-horizontal">
 
-    			<center><h2>ADD BOOK IN LIBRARY</h2></center>
+    			<center><h2>ISSUE BOOK TO STUDENT</h2></center>
 
 {% csrf_token %}
 
@@ -117,11 +117,11 @@
 
     		<div class="form-group">
     			<div class="col-xs-8 col-xs-offset-4">
-            <button type="submit" class="btn btn-primary btn-lg">ADD</button>
+            <button type="submit" class="btn btn-primary btn-lg">ISSUE</button>
     			</div>
     		</div>
         </form>
-    	<div class="text-center">View Available Book In Library<a href="viewbook">Click here</a></div>
+    	<div class="text-center">View Issued Book to Student  <a href="viewissuedbook">Click here</a></div>
     </div>
 
 
