@@ -30,11 +30,11 @@ urlpatterns = [
     path('studentclick',views.studentclick_view),
     
     path('studentsignup',views.studentsignup_view),
-    path('adminlogin',LoginView.as_view(template_name='library_core/adminlogin.html')),
-    path('studentlogin', LoginView.as_view(template_name='library_core/studentlogin.html'), name='studentlogin'),
+    path('adminlogin',LoginView.as_view(template_name='library/adminlogin.html')),
+    path('studentlogin', LoginView.as_view(template_name='library/studentlogin.html'), name='studentlogin'),
 
     path('returnbook/<int:id>/',views.returnbook,name='returnbook'),
-    path('logout',LogoutView.as_view(template_name='library_core/index.html')),
+    path('logout',LogoutView.as_view(template_name='library/index.html')),
     path('afterlogin',views.afterlogin_view),
     path('addbook',views.addbook_view),
     path('viewbook',views.viewbook_view),
