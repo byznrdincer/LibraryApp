@@ -10,19 +10,19 @@ from . import forms, models
 def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request, "library_core/index.html")
+    return render(request, "library/index.html")
 
 # Admin giriş sayfasına yönlendirme
 def adminclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request, "library_core/adminclick.html")
+    return render(request, "library/adminclick.html")
 
 # Öğrenci giriş sayfasına yönlendirme
 def studentclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request, "library_core/studentclick.html")
+    return render(request, "library/studentclick.html")
 
 # Öğrenci kayıt işlemi
 def studentsignup_view(request):
@@ -49,7 +49,7 @@ def studentsignup_view(request):
 
             return HttpResponseRedirect('studentlogin')  # Bu satır if bloğuna alındı
     
-    return render(request, 'library_core/studentsignup.html', context=mydict)
+    return render(request, 'library/studentsignup.html', context=mydict)
 
 # Admin mi kontrolü
 def is_admin(user):
@@ -62,9 +62,9 @@ def is_student(user):
 # Giriş sonrası yönlendirme
 def afterlogin_view(request):
     if is_admin(request.user):
-        return render(request, 'library_core/adminafterlogin.html')
+        return render(request, 'library/adminafterlogin.html')
     elif is_student(request.user):
-        return render(request, 'library_core/studentafterlogin.html')
+        return render(request, 'library/studentafterlogin.html')
 
 # Kitap iade işlemi
 def returnbook(request, id):
@@ -83,14 +83,14 @@ def addbook_view(request):
         if form.is_valid():
             user = form.save()  # Senin isteğinle bu satır değişmedi
             return render(request, 'library_core/bookadded.html')
-    return render(request, 'library_core/addbook.html', {'form': form})
+    return render(request, 'library/addbook.html', {'form': form})
 
 # Tüm kitapları listeleme
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def viewbook_view(request):
     books = models.Book.objects.all()
-    return render(request, 'library_core/viewbook.html', {'books': books})
+    return render(request, 'library/viewbook.html', {'books': books})
 
 # Kitap ödünç verme
 @login_required(login_url='adminlogin')
@@ -116,7 +116,7 @@ def issuebook_view(request):
                 fail_silently=False,
             )
             return render(request, 'library/bookissued.html')
-    return render(request, 'library_core/issuebook.html', {'form': form})
+    return render(request, 'library/issuebook.html', {'form': form})
 
 # Tüm ödünç kitapları görüntüle (admin)
 @login_required(login_url='adminlogin')
@@ -147,14 +147,14 @@ def viewissuedbook_view(request):
                 )
                 li.append(t)
 
-    return render(request, 'library_core/viewissuedbook.html', {'li': li})
+    return render(request, 'library/viewissuedbook.html', {'li': li})
 
 # Tüm öğrencileri listele (admin)
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def viewstudent_view(request):
     students = models.StudentExtra.objects.all()
-    return render(request, 'library_core/viewstudent.html', {'students': students})
+    return render(request, 'library/viewstudent.html', {'students': students})
 
 # Giriş yapan öğrencinin kitaplarını görüntülemesi
 @login_required(login_url='studentlogin')
@@ -183,4 +183,4 @@ def viewissuedbookbystudent(request):
         t2 = (issdate, expdate, fine, ib.status, ib.id)
         li2.append(t2)
 
-    return render(request, 'library_core/viewissuedbookbystudent.html', {'li1': li1, 'li2': li2})
+    return render(request, 'library/viewissuedbookbystudent.html', {'li1': li1, 'li2': li2})

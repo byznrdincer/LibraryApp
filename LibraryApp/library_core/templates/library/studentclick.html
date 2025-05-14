@@ -1,41 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <title>LazyCoder || sumit</title>
-    <style media="screen">
-    .jumbotron{
-      margin-bottom: 0px;
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #d0eaff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    .jumbotron h1{
+
+    .card {
+      background-color: #ffffff;
+      padding: 60px 50px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       text-align: center;
+      max-width: 600px;
+      width: 90%;
     }
-    </style>
 
-  </head>
-  <body>
-      {% include "library/navbar.html" %}
-<br><br>
-      <div class="jumbotron">
-        <h1 class="display-4">Hello, Student</h1>
-        <p class="lead">Welcome to Online Library Management System.</p>
-        <hr class="my-4">
-        <p>You can access various features after Login.</p>
-        <p class="lead">
-          <a class="btn btn-primary btn-lg" href="studentsignup" role="button">SignUp</a>
-          <a class="btn btn-primary btn-lg" href="studentlogin" role="button">Login</a>
-        </p>
-      </div>
+    .card h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      color: #0277bd;
+    }
 
+    .card p {
+      font-size: 1.2rem;
+      color: #444;
+      margin: 12px 0;
+    }
 
-      {% include "library/footer.html" %}
-  </body>
+    .buttons {
+      margin-top: 30px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      margin: 0 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: white;
+      background-color: #4fc3f7; /* Açık mavi */
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+
+    .buttons a:hover {
+      background-color: #29b6f6;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Member Portal</h1>
+    <hr>
+    <p>You can access various features after login.</p>
+    <div class="buttons">
+      <a href="studentsignup">Sign Up</a>
+      <a href="studentlogin">Login</a>
+    </div>
+  </div>
+
+</body>
 </html>
