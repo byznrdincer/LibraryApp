@@ -1,6 +1,12 @@
 from django.contrib import admin
 from .models import StudentExtra, Book, IssuedBook
 
+from django.contrib import admin
+from .models import StudentExtra, Book, IssuedBook
+
+from django.contrib import admin
+from .models import StudentExtra, Book, IssuedBook
+
 # StudentExtra 
 @admin.register(StudentExtra)
 class StudentExtraAdmin(admin.ModelAdmin):
@@ -21,7 +27,6 @@ class BookAdmin(admin.ModelAdmin):
 # IssuedBook 
 @admin.register(IssuedBook)
 class IssuedBookAdmin(admin.ModelAdmin):
-    list_display = ('enrollment', 'isbn', 'issuedate', 'expirydate', 'status')
+    list_display = ('student', 'book', 'issuedate', 'expirydate', 'status')
     list_filter = ('status', 'issuedate')
-    search_fields = ('enrollment', 'isbn')
-
+    search_fields = ('student__user__first_name', 'student__enrollment', 'book__name', 'book__isbn')

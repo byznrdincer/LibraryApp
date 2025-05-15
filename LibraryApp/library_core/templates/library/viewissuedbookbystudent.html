@@ -7,55 +7,94 @@
 
 <style media="screen">
 table.redTable {
-border: 2px solid #A40808;
-background-color: #EEE7DB;
-width: 100%;
-text-align: center;
-border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fdfefe;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
 }
-table.redTable td, table.redTable th {
-border: 1px solid #AAAAAA;
-padding: 3px 2px;
-}
-table.redTable tbody td {
-font-size: 13px;
-}
-table.redTable tr:nth-child(even) {
-background: #F5C8BF;
-}
+
 table.redTable thead {
-background: #A40808;
+  background-color: #dbe9f4;
+  color: #2f4f4f;
 }
+
 table.redTable thead th {
-font-size: 19px;
-font-weight: bold;
-color: #FFFFFF;
-text-align: center;
-border-left: 2px solid #A40808;
+  padding: 12px;
+  font-size: 15px;
+  text-align: center;
+  font-weight: 600;
 }
-table.redTable thead th:first-child {
-border-left: none;
+
+table.redTable tbody tr:nth-child(even) {
+  background-color: #f2f7fb;
+}
+
+table.redTable tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+table.redTable tbody td {
+  padding: 10px;
+  font-size: 14px;
+  text-align: center;
+  color: #444;
+  border-top: 1px solid #e0e0e0;
+}
+
+table.redTable tbody tr:hover {
+  background-color: #e9f3f9;
+  transition: 0.3s;
 }
 
 table.redTable tfoot {
-font-size: 13px;
-font-weight: bold;
-color: #FFFFFF;
-background: #A40808;
+  background-color: #dbe9f4;
+  color: #2f4f4f;
+  font-weight: bold;
 }
+
 table.redTable tfoot td {
-font-size: 13px;
+  padding: 10px;
+  text-align: center;
 }
+
 table.redTable tfoot .links {
-text-align: right;
+  text-align: right;
 }
-table.redTable tfoot .links a{
-display: inline-block;
-background: #FFFFFF;
-color: #A40808;
-padding: 2px 8px;
-border-radius: 5px;
+
+table.redTable tfoot .links a {
+  display: inline-block;
+  background-color: #ffffff;
+  color: #2f4f4f;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid #c4d4df;
 }
+
+table.redTable tfoot .links a:hover {
+  background-color: #f2f7fb;
+}
+
+button {
+  background-color: #c8dfea;
+  color: #2f4f4f;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #b0d0e0;
+}
+
 </style>
 
   </head>
@@ -157,6 +196,5 @@ border-radius: 5px;
 
 <br><br><br><br><br><br>
 <br><br><br>
-  {% include "library/footer.html" %}
   </body>
 </html>

@@ -23,8 +23,8 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', views.home_view),
-    path('studentclick', views.studentclick_view),
+    path('', views.home_view, name='home_view'),
+    path('studentclick', views.studentclick_view, name='studentclick'),
     path('studentsignup', views.studentsignup_view),
     path('studentlogin', LoginView.as_view(template_name='library/studentlogin.html'), name='studentlogin'),
     path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True, next_page='afterlogin'), name='login'),

@@ -7,14 +7,14 @@ from django.core.mail import send_mail
 from . import forms, models
 # Ana sayfa
 def home_view(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('afterlogin')
+    #if request.user.is_authenticated:
+        #return HttpResponseRedirect('afterlogin')
     return render(request, "library/index.html")
 
 # Öğrenci giriş sayfasına yönlendirme
 def studentclick_view(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('afterlogin')
+    # if request.user.is_authenticated:
+    #     return HttpResponseRedirect('afterlogin')
     return render(request, "library/studentclick.html")
 
 # Öğrenci kayıt işlemi
@@ -48,9 +48,20 @@ def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
 # Giriş sonrası yönlendirme
+# def afterlogin_view(request):
+#     if is_student(request.user):
+#         return render(request,'library/studentafterlogin.html')
+#     from django.shortcuts import render, redirect
+
 def afterlogin_view(request):
-    if is_student(request.user):
+    if request.user.groups.filter(name='STUDENT').exists():
         return render(request, 'library/studentafterlogin.html')
+    elif request.user.is_superuser:
+        return redirect('/admin')  # veya redirect('admin_dashboard') gibi bir URL name
+    else:
+        return redirect('home_view')  # fallback için
+
+
 
 # Kitap iade işlemi
 def returnbook(request, id):
