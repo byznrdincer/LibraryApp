@@ -30,3 +30,9 @@ class IssuedBookAdmin(admin.ModelAdmin):
     list_display = ('student', 'book', 'issuedate', 'expirydate', 'status')
     list_filter = ('status', 'issuedate')
     search_fields = ('student__user__first_name', 'student__enrollment', 'book__name', 'book__isbn')
+    actions = ['approve_issues']
+
+    @admin.action(description="Approve selected book issues")
+    def approve_issues(self, request, queryset):
+        updated = queryset.update(is_approved=True)
+        self.message_user(request, f"{updated} book issue(s) approved.")

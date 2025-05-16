@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.home_view, name='home_view'),
+    path('issuebook/', views.issuebook, name='issuebook'),
     path('studentclick', views.studentclick_view, name='studentclick'),
     path('studentsignup', views.studentsignup_view),
     path('studentlogin', LoginView.as_view(template_name='library/studentlogin.html'), name='studentlogin'),

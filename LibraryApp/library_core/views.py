@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from datetime import date
 from django.core.mail import send_mail
 from . import forms, models
+from django.contrib import messages
 # Ana sayfa
 def home_view(request):
     #if request.user.is_authenticated:
@@ -80,8 +81,9 @@ def issuebook_view(request):
             obj = models.IssuedBook()
             obj.enrollment = request.POST.get('enrollment2')
             obj.isbn = request.POST.get('isbn2')
+            obj.approved = False 
             obj.save()
-
+            
             # E-posta gönder
             student_email = models.StudentExtra.objects.get(enrollment=obj.enrollment).user.email
             book_name = models.Book.objects.get(isbn=obj.isbn).name
@@ -99,8 +101,8 @@ def issuebook_view(request):
 @login_required(login_url='studentlogin')
 def viewissuedbookbystudent(request):
     student = models.StudentExtra.objects.filter(user_id=request.user.id).first()
-    issuedbooks = models.IssuedBook.objects.filter(student=student)
-
+    issuedbooks = models.IssuedBook.objects.filter(student=student, approved=True)
+    all_books = models.Book.objects.all()
     li1 = []
     li2 = []
 
@@ -120,4 +122,35 @@ def viewissuedbookbystudent(request):
         t2 = (issdate, expdate, fine, ib.status, ib.id)
         li2.append(t2)
 
-    return render(request, 'library/viewissuedbookbystudent.html', {'li1': li1, 'li2': li2})
+    return render(request, 'library/viewissuedbookbystudent.html', {
+    'li1': li1,
+    'li2': li2,
+    'all_books': all_books,
+    'student': student  
+})
+@login_required(login_url='studentlogin')
+def issuebook(request):
+    if request.method == 'POST':
+        isbn = request.POST.get('isbn2')
+        enrollment = request.POST.get('enrollment2')
+
+        student = models.StudentExtra.objects.filter(enrollment=enrollment).first()
+        book = models.Book.objects.filter(isbn=isbn).first()
+
+        if student and book:
+            # Zaten aynı kitap onaylı veya beklemede mi diye kontrol edebilirsin
+            issued_book = models.IssuedBook.objects.filter(student=student, book=book, approved=False).first()
+            if issued_book:
+                messages.warning(request, 'You already requested this book and it is pending approval.')
+            else:
+                # Yeni talep ekle
+                models.IssuedBook.objects.create(student=student, book=book, approved=False, status='Pending')
+                messages.success(request, 'Book request submitted successfully.')
+        else:
+            messages.error(request, 'Invalid student or book.')
+
+        return redirect('viewissuedbookbystudent')
+
+    else:
+        return redirect('viewissuedbookbystudent')
+

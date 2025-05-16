@@ -58,6 +58,7 @@ class IssuedBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
     issuedate = models.DateField(auto_now=True)
     expirydate = models.DateField(default=get_expiry)
+    approved = models.BooleanField(default=False)  # admin onayı gerekli mi?
 
     statuschoice = [
         ('Issued', 'Issued'),
