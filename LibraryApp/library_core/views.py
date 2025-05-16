@@ -99,16 +99,15 @@ def issuebook_view(request):
 @login_required(login_url='studentlogin')
 def viewissuedbookbystudent(request):
     student = models.StudentExtra.objects.filter(user_id=request.user.id).first()
-    issuedbooks = models.IssuedBook.objects.filter(enrollment=student.enrollment)
+    issuedbooks = models.IssuedBook.objects.filter(student=student)
 
     li1 = []
     li2 = []
 
     for ib in issuedbooks:
-        books = models.Book.objects.filter(isbn=ib.isbn)
-        for book in books:
-            t1 = (request.user, student.enrollment, student.branch, book.name, book.author)
-            li1.append(t1)
+        book = ib.book  # Burada tek kitap objesine erişiyorsun
+        t1 = (request.user, student.enrollment, student.branch, book.name, book.author)
+        li1.append(t1)
 
         issdate = f"{ib.issuedate.day}-{ib.issuedate.month}-{ib.issuedate.year}"
         expdate = f"{ib.expirydate.day}-{ib.expirydate.month}-{ib.expirydate.year}"

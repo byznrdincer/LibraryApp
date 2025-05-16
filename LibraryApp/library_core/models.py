@@ -54,8 +54,8 @@ def get_expiry():
 
 # Ödünç alınan kitaplar
 class IssuedBook(models.Model):
-    student = models.ForeignKey(StudentExtra, on_delete=models.CASCADE)  # FK student
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)            # FK book
+    student = models.ForeignKey(StudentExtra, on_delete=models.CASCADE,null=True)  # FK student
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
     issuedate = models.DateField(auto_now=True)
     expirydate = models.DateField(default=get_expiry)
 
