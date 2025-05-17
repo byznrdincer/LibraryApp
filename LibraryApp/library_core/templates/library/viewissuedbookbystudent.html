@@ -2,222 +2,255 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Library Book Issue</title>
 
 <style media="screen">
-table.redTable {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fdfefe;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-  border-radius: 10px;
-  overflow: hidden;
-}
+  /* Başlık */
+  h3.p-3.mb-2.bg-primary.text-white {
+    font-size: 50px;
+    text-align: center;
+    background-color: #6ea8fe !important; /* Hafif açık mavi */
+    color: #1e2d3b !important; /* Koyu ama yumuşak yazı rengi */
+    padding: 20px 0 !important;
+    border-radius: 10px;
+    margin: 40px 0 30px 0;
+  }
 
-table.redTable thead {
-  background-color: #dbe9f4;
-  color: #2f4f4f;
-}
+  /* Tablo genel */
+  table.redTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fdfefe;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+  }
 
-table.redTable thead th {
-  padding: 12px;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 600;
-}
+  /* Tablo başlık */
+  table.redTable thead {
+    background-color: #c4d9f8; /* Açık mavi ton */
+    color: #1e2d3b;
+  }
 
-table.redTable tbody tr:nth-child(even) {
-  background-color: #f2f7fb;
-}
+  table.redTable thead th {
+    padding: 12px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: 600;
+  }
 
-table.redTable tbody tr:nth-child(odd) {
-  background-color: #ffffff;
-}
+  /* Satırlar - çift */
+  table.redTable tbody tr:nth-child(even) {
+    background-color: #e8f0fe; /* Hafif mavi açık */
+  }
 
-table.redTable tbody td {
-  padding: 10px;
-  font-size: 14px;
-  text-align: center;
-  color: #444;
-  border-top: 1px solid #e0e0e0;
-}
+  /* Satırlar - tek */
+  table.redTable tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Beyaz */
+  }
 
-table.redTable tbody tr:hover {
-  background-color: #e9f3f9;
-  transition: 0.3s;
-}
+  /* Hücreler */
+  table.redTable tbody td {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: #444;
+    border-top: 1px solid #e0e0e0;
+    vertical-align: middle; /* Dikey ortalama */
+  }
 
-table.redTable tfoot {
-  background-color: #dbe9f4;
-  color: #2f4f4f;
-  font-weight: bold;
-}
+  /* Hover efekti */
+  table.redTable tbody tr:hover {
+    background-color: #c9d9f8;
+    transition: 0.3s;
+  }
 
-table.redTable tfoot td {
-  padding: 10px;
-  text-align: center;
-}
+  /* Footer */
+  table.redTable tfoot {
+    background-color: #c4d9f8;
+    color: #1e2d3b;
+    font-weight: bold;
+  }
 
-table.redTable tfoot .links {
-  text-align: right;
-}
+  table.redTable tfoot td {
+    padding: 10px;
+    text-align: center;
+  }
 
-table.redTable tfoot .links a {
-  display: inline-block;
-  background-color: #ffffff;
-  color: #2f4f4f;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: 500;
-  text-decoration: none;
-  border: 1px solid #c4d4df;
-}
+  table.redTable tfoot .links {
+    text-align: right;
+  }
 
-table.redTable tfoot .links a:hover {
-  background-color: #f2f7fb;
-}
+  table.redTable tfoot .links a {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #2f4f4f;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid #c4d4df;
+  }
 
-button {
-  background-color: #c8dfea;
-  color: #2f4f4f;
-  padding: 7px 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  table.redTable tfoot .links a:hover {
+    background-color: #f2f7fb;
+  }
 
-button:hover {
-  background-color: #b0d0e0;
-}
+  /* Buton */
+  button {
+    background-color: #5a8df6;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
 
+  button:hover {
+    background-color: #356bfc;
+  }
+
+  /* Layout - iki tablo yanyana */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin: 0 10px;
+  }
+
+  .col-lg-6 {
+    flex: 1 1 45%;
+    min-width: 300px;
+  }
 </style>
 
   </head>
   <body>
-  <br><br>
-  <h3 class="p-3 mb-2 bg-primary text-white" style='font-size: 50px;text-align:center;'>Book Issued To You !</h3>
+    <br><br>
+    <h3 class="p-3 mb-2 bg-primary text-white">Book Issued To You !</h3>
 
-  <div class="row">
+    <div class="row">
 
-    <div class="col-lg-6" style="padding-right:0px;">
-      {% if li1 %}
-      <table class="redTable">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Enrollment</th>
-            <th>Branch</th>
-            <th>Book Name</th>
-            <th>Book Author</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <td colspan="7">
-              <div class="links"></div>
-            </td>
-          </tr>
-        </tfoot>
-        <tbody>
-          {% for t in li1 %}
-          <tr>
-            <td>{{ t.0 }}</td>
-            <td>{{ t.1 }}</td>
-            <td>{{ t.2 }}</td>
-            <td>{{ t.3 }}</td>
-            <td>{{ t.4 }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="col-lg-6" style="padding-right:0px;">
+        {% if li1 %}
+        <table class="redTable">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Enrollment</th>
+              <th>Branch</th>
+              <th>Book Name</th>
+              <th>Book Author</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="7">
+                <div class="links"></div>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for t in li1 %}
+            <tr>
+              <td>{{ t.0 }}</td>
+              <td>{{ t.1 }}</td>
+              <td>{{ t.2 }}</td>
+              <td>{{ t.3 }}</td>
+              <td>{{ t.4 }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-lg-6" style="padding-left:0px;">
+        <table class="redTable">
+          <thead>
+            <tr>
+              <th>Issue Date</th>
+              <th>Expiry Date</th>
+              <th>Fine</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                <div class="links"></div>
+              </td>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for t in li2 %}
+            <tr>
+              <td>{{ t.0 }}</td>
+              <td>{{ t.1 }}</td>
+              <td>
+                {% if t.3 == "Returned" %}
+                  No Fine
+                {% else %}
+                  {{ t.2 }}
+                {% endif %}
+              </td>
+              <td>{{ t.3 }}</td>
+              <td>
+                {% if t.3 == "Issued" %}
+                  <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <h1 style="text-align:center; color:#444;">No book Issued to you</h1>
+        {% endif %}
+      </div>
     </div>
 
-    <div class="col-lg-6" style="padding-left:0px;">
-      <table class="redTable">
-        <thead>
-          <tr>
-            <th>Issue Date</th>
-            <th>Expiry Date</th>
-            <th>Fine</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <td colspan="5">
-              <div class="links"></div>
-            </td>
-          </tr>
-        </tfoot>
-        <tbody>
-          {% for t in li2 %}
-          <tr>
-            <td>{{ t.0 }}</td>
-            <td>{{ t.1 }}</td>
-            <td>
-              {% if t.3 == "Returned" %}
-                No Fine
-              {% else %}
-                {{ t.2 }}
-              {% endif %}
-            </td>
-            <td>{{ t.3 }}</td>
-            <td>
-              {% if t.3 == "Issued" %}
-                <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-      <h1>No book Issued to you</h1>
-      {% endif %}
-    </div>
-  </div>
+    <!-- Yeni kitap listesi ve talep formu -->
+    <br><br><br>
 
-  <!-- Yeni kitap listesi ve talep formu -->
-  <br><br><br>
+    <h3 class="p-3 mb-2 bg-primary text-white" style="font-size: 40px;">Library Books - Available Books for Request</h3>
 
-  <h3 class="p-3 mb-2 bg-primary text-white" style='font-size: 40px; text-align:center;'>Library Books - Request a Book</h3>
+    <table class="redTable" style="margin-top: 20px;">
+      <thead>
+        <tr>
+          <th>ISBN</th>
+          <th>Name</th>
+          <th>Author</th>
+          <th>Publisher</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in all_books %}
+        <tr>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.name }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.publisher }}</td>
+          <td>
+            <form method="POST" action="{% url 'issuebook' %}">
+              {% csrf_token %}
+              <input type="hidden" name="isbn2" value="{{ book.isbn }}">
+              <input type="hidden" name="enrollment2" value="{{ student.enrollment }}">
+              <button type="submit">Request Book</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  <table class="redTable" style="margin-top: 20px;">
-    <thead>
-      <tr>
-        <th>ISBN</th>
-        <th>Name</th>
-        <th>Author</th>
-        <th>Publisher</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for book in all_books %}
-      <tr>
-        <td>{{ book.isbn }}</td>
-        <td>{{ book.name }}</td>
-        <td>{{ book.author }}</td>
-        <td>{{ book.publisher }}</td>
-        <td>
-          <form method="POST" action="{% url 'issuebook' %}">
-            {% csrf_token %}
-            <input type="hidden" name="isbn2" value="{{ book.isbn }}">
-            <input type="hidden" name="enrollment2" value="{{ student.enrollment }}">
-            <button type="submit">Request Book</button>
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <br><br><br><br><br><br>
-  <br><br><br>
+    <br><br><br><br><br><br>
+    <br><br><br>
   </body>
 </html>

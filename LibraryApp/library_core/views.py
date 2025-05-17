@@ -54,15 +54,22 @@ def is_student(user):
 #         return render(request,'library/studentafterlogin.html')
 #     from django.shortcuts import render, redirect
 
+from .models import StudentExtra  # Düzgün model adını import et
+
 def afterlogin_view(request):
     if request.user.groups.filter(name='STUDENT').exists():
-        return render(request, 'library/studentafterlogin.html')
+        student = get_object_or_404(StudentExtra, user=request.user)
+        context = {
+            'student': student,
+            'user': request.user
+        }
+        return render(request, 'library/studentafterlogin.html', context)
+
     elif request.user.is_superuser:
-        return redirect('/admin')  # veya redirect('admin_dashboard') gibi bir URL name
+        return redirect('/admin')
+
     else:
-        return redirect('home_view')  # fallback için
-
-
+        return redirect('home_view')
 
 # Kitap iade işlemi
 def returnbook(request, id):
@@ -97,17 +104,24 @@ def issuebook_view(request):
             return render(request, 'library/bookissued.html')
     return render(request, 'library/issuebook.html', {'form': form})
 
-# Giriş yapan öğrencinin kitaplarını görüntülemesi
+from datetime import date
+
 @login_required(login_url='studentlogin')
 def viewissuedbookbystudent(request):
     student = models.StudentExtra.objects.filter(user_id=request.user.id).first()
     issuedbooks = models.IssuedBook.objects.filter(student=student, approved=True)
-    all_books = models.Book.objects.all()
+    
+    # Ödünçte olan kitapların ISBN listesi
+    issued_books_isbn = models.IssuedBook.objects.filter(status='Issued').values_list('book__isbn', flat=True)
+    
+    # Ödünçte olmayan kitaplar
+    all_books = models.Book.objects.exclude(isbn__in=issued_books_isbn)
+
     li1 = []
     li2 = []
 
     for ib in issuedbooks:
-        book = ib.book  # Burada tek kitap objesine erişiyorsun
+        book = ib.book
         t1 = (request.user, student.enrollment, student.branch, book.name, book.author)
         li1.append(t1)
 
@@ -123,11 +137,11 @@ def viewissuedbookbystudent(request):
         li2.append(t2)
 
     return render(request, 'library/viewissuedbookbystudent.html', {
-    'li1': li1,
-    'li2': li2,
-    'all_books': all_books,
-    'student': student  
-})
+        'li1': li1,
+        'li2': li2,
+        'all_books': all_books,
+        'student': student  
+    })
 @login_required(login_url='studentlogin')
 def issuebook(request):
     if request.method == 'POST':
