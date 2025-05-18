@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'library_core',
+    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -149,5 +150,9 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'  # .env'de 'True' ya da 'Fa
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 LOGIN_REDIRECT_URL = '/afterlogin'
+CRON_CLASSES = [
+    "library_core.cron.SendReminderEmailsCronJob",
+]
+
 
 

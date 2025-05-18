@@ -15,7 +15,11 @@ def send_approval_email(sender, instance, created, **kwargs):
         try:
             send_mail(
                 subject='Book Issue Approved',
-                message=f"Dear {student_name}, your request to borrow the book '{book_name}' has been approved. You can now collect it from the library.",
+                message=(
+                    f"Dear {student_name}, your request to borrow the book '{book_name}' has been approved. "
+                    f"You can now collect it from the library. Please note that you have 30 days to return the book. "
+                    
+                ),
                 from_email=settings.EMAIL_HOST_USER,
                 recipient_list=[student_email],
                 fail_silently=False,
@@ -23,3 +27,4 @@ def send_approval_email(sender, instance, created, **kwargs):
             print(f"Email sent to {student_email}")
         except Exception as e:
             print(f"Failed to send email to {student_email}: {e}")
+

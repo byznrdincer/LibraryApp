@@ -6,7 +6,6 @@ from datetime import date
 from django.core.mail import send_mail
 from . import forms, models
 from django.contrib import messages
-from datetime import date
 from .models import StudentExtra
 from django.conf import settings
 # Ana sayfa
@@ -138,6 +137,8 @@ def viewissuedbookbystudent(request):
         'all_books': all_books,
         'student': student  
     })
+from django.db.models import Q
+
 @login_required(login_url='studentlogin')
 def issuebook(request):
     if request.method == 'POST':
@@ -148,14 +149,35 @@ def issuebook(request):
         book = models.Book.objects.filter(isbn=isbn).first()
 
         if student and book:
-            # Zaten aynı kitap onaylı veya beklemede mi diye kontrol edebilirsin
-            issued_book = models.IssuedBook.objects.filter(student=student, book=book, approved=False).first()
-            if issued_book:
-                messages.warning(request, 'You already requested this book and it is pending approval.')
-            else:
-                # Yeni talep ekle
-                models.IssuedBook.objects.create(student=student, book=book, approved=False, status='Pending')
-                messages.success(request, 'Book request submitted successfully.')
+            # Aynı kitap zaten istenmiş mi? (onaylı veya beklemede fark etmez)
+            existing_request = models.IssuedBook.objects.filter(
+                student=student,
+                book=book,
+                status__in=['Pending', 'Issued']
+            ).exists()
+
+            if existing_request:
+                messages.warning(request, 'You have already requested or borrowed this book.')
+                return redirect('viewissuedbookbystudent')
+
+            # Aktif kitap sayısı (onaylı veya beklemede)
+            active_books_count = models.IssuedBook.objects.filter(
+                student=student,
+                status__in=['Pending', 'Issued']
+            ).count()
+
+            if active_books_count >= 3:
+                messages.warning(request, 'You cannot request more than 3 books at a time.')
+                return redirect('viewissuedbookbystudent')
+
+            # Yeni kitap isteği oluştur
+            models.IssuedBook.objects.create(
+                student=student,
+                book=book,
+                approved=False,
+                status='Pending'
+            )
+            messages.success(request, 'Book request submitted successfully.')
         else:
             messages.error(request, 'Invalid student or book.')
 
@@ -163,19 +185,3 @@ def issuebook(request):
 
     else:
         return redirect('viewissuedbookbystudent')
-from django.core.mail import send_mail
-from django.http import HttpResponse
-
-def test_mail(request):
-    try:
-        send_mail(
-            'Test Mail',
-            'Bu bir test mailidir.',
-            'beyzanurdincer502@gmail.com',
-            ['beyzanurdincer65@gmil.com'],  # Kendi mail adresini veya test için kendininkini koy
-            fail_silently=False,
-        )
-        return HttpResponse("Mail gönderildi.")
-    except Exception as e:
-        return HttpResponse(f"Mail gönderilemedi, hata: {e}")
-
