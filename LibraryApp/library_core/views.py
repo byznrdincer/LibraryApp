@@ -6,6 +6,9 @@ from datetime import date
 from django.core.mail import send_mail
 from . import forms, models
 from django.contrib import messages
+from datetime import date
+from .models import StudentExtra
+from django.conf import settings
 # Ana sayfa
 def home_view(request):
     #if request.user.is_authenticated:
@@ -48,14 +51,6 @@ def studentsignup_view(request):
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
-# Giriş sonrası yönlendirme
-# def afterlogin_view(request):
-#     if is_student(request.user):
-#         return render(request,'library/studentafterlogin.html')
-#     from django.shortcuts import render, redirect
-
-from .models import StudentExtra  # Düzgün model adını import et
-
 def afterlogin_view(request):
     if request.user.groups.filter(name='STUDENT').exists():
         student = get_object_or_404(StudentExtra, user=request.user)
@@ -78,33 +73,34 @@ def returnbook(request, id):
     issued_book.save()
     return redirect('viewissuedbookbystudent')
 
-# Kitap ödünç verme (giriş yapan öğrenci için)
+
 @login_required(login_url='studentlogin')
 def issuebook_view(request):
     form = forms.IssuedBookForm()
     if request.method == 'POST':
         form = forms.IssuedBookForm(request.POST)
         if form.is_valid():
-            obj = models.IssuedBook()
-            obj.enrollment = request.POST.get('enrollment2')
-            obj.isbn = request.POST.get('isbn2')
-            obj.approved = False 
-            obj.save()
+            enrollment = request.POST.get('enrollment2')
+            isbn = request.POST.get('isbn2')
             
-            # E-posta gönder
-            student_email = models.StudentExtra.objects.get(enrollment=obj.enrollment).user.email
-            book_name = models.Book.objects.get(isbn=obj.isbn).name
-            send_mail(
-                subject='Kitap Teslim Bilgisi',
-                message=f"'{book_name}' adlı kitabı aldınız. Teslim süresi 30 gündür.",
-                from_email='seninmailin@gmail.com',
-                recipient_list=[student_email],
-                fail_silently=False,
-            )
-            return render(request, 'library/bookissued.html')
-    return render(request, 'library/issuebook.html', {'form': form})
+            try:
+                student = models.StudentExtra.objects.get(enrollment=enrollment)
+                book = models.Book.objects.get(isbn=isbn)
+            except models.StudentExtra.DoesNotExist:
+                return render(request, 'library/issuebook.html', {'form': form, 'error': 'Student not found'})
+            except models.Book.DoesNotExist:
+                return render(request, 'library/issuebook.html', {'form': form, 'error': 'Book not found'})
 
-from datetime import date
+            # Kitap talebi oluştur
+            obj = models.IssuedBook()
+            obj.student = student
+            obj.book = book
+            obj.approved = False  # Admin onayı bekleniyor
+            obj.save()
+
+            return render(request, 'library/bookrequested.html')  # "Talebiniz alındı" gibi bir sayfa
+
+    return render(request, 'library/issuebook.html', {'form': form})
 
 @login_required(login_url='studentlogin')
 def viewissuedbookbystudent(request):
@@ -167,4 +163,19 @@ def issuebook(request):
 
     else:
         return redirect('viewissuedbookbystudent')
+from django.core.mail import send_mail
+from django.http import HttpResponse
+
+def test_mail(request):
+    try:
+        send_mail(
+            'Test Mail',
+            'Bu bir test mailidir.',
+            'beyzanurdincer502@gmail.com',
+            ['beyzanurdincer65@gmil.com'],  # Kendi mail adresini veya test için kendininkini koy
+            fail_silently=False,
+        )
+        return HttpResponse("Mail gönderildi.")
+    except Exception as e:
+        return HttpResponse(f"Mail gönderilemedi, hata: {e}")
 

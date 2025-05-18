@@ -1,12 +1,6 @@
 from django.contrib import admin
 from .models import StudentExtra, Book, IssuedBook
 
-from django.contrib import admin
-from .models import StudentExtra, Book, IssuedBook
-
-from django.contrib import admin
-from .models import StudentExtra, Book, IssuedBook
-
 # StudentExtra 
 @admin.register(StudentExtra)
 class StudentExtraAdmin(admin.ModelAdmin):
@@ -27,12 +21,17 @@ class BookAdmin(admin.ModelAdmin):
 # IssuedBook 
 @admin.register(IssuedBook)
 class IssuedBookAdmin(admin.ModelAdmin):
-    list_display = ('student', 'book', 'issuedate', 'expirydate', 'status')
-    list_filter = ('status', 'issuedate')
+    list_display = ('student', 'book', 'issuedate', 'expirydate', 'status', 'approved')  
+    list_filter = ('status', 'issuedate', 'approved')  
     search_fields = ('student__user__first_name', 'student__enrollment', 'book__name', 'book__isbn')
     actions = ['approve_issues']
 
     @admin.action(description="Approve selected book issues")
     def approve_issues(self, request, queryset):
-        updated = queryset.update(is_approved=True)
-        self.message_user(request, f"{updated} book issue(s) approved.")
+        count = 0
+        for issue in queryset:
+            if not issue.approved:  
+                issue.approved = True  
+                issue.save()  # Burada onay kaydediliyor, sinyal maili tetikleyecek
+                count += 1
+        self.message_user(request, f"{count} book issue(s) approved.")
