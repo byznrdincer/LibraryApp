@@ -1,24 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from datetime import date
-from django.core.mail import send_mail
-from . import forms, models
 from django.contrib import messages
-from .models import StudentExtra
-from django.conf import settings
-from .models import StudentExtra, Book  
+from . import forms, models
+from django.db.models import Q
+
 # Ana sayfa
 def home_view(request):
-    #if request.user.is_authenticated:
-        #return HttpResponseRedirect('afterlogin')
     return render(request, "library/index.html")
 
 # Öğrenci giriş sayfasına yönlendirme
 def studentclick_view(request):
-    # if request.user.is_authenticated:
-    #     return HttpResponseRedirect('afterlogin')
     return render(request, "library/studentclick.html")
 
 # Öğrenci kayıt işlemi
@@ -51,17 +45,16 @@ def studentsignup_view(request):
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
-
-
+# Giriş sonrası yönlendirme
 def afterlogin_view(request):
     if request.user.groups.filter(name='STUDENT').exists():
-        student = get_object_or_404(StudentExtra, user=request.user)
-        all_books = Book.objects.all()  # Tüm kitapları çekiyoruz
+        student = get_object_or_404(models.StudentExtra, user=request.user)
+        all_books = models.Book.objects.all()
 
         context = {
             'student': student,
             'user': request.user,
-            'all_books': all_books,   # Kitapları template'e yolluyoruz
+            'all_books': all_books,
         }
         return render(request, 'library/studentafterlogin.html', context)
 
@@ -72,51 +65,30 @@ def afterlogin_view(request):
         return redirect('home_view')
 
 # Kitap iade işlemi
+@login_required(login_url='studentlogin')
 def returnbook(request, id):
     issued_book = get_object_or_404(models.IssuedBook, pk=id)
     issued_book.status = "Returned"
     issued_book.save()
+    messages.success(request, "Book returned successfully.")
     return redirect('viewissuedbookbystudent')
 
-
-@login_required(login_url='studentlogin')
-def issuebook_view(request):
-    form = forms.IssuedBookForm()
-    if request.method == 'POST':
-        form = forms.IssuedBookForm(request.POST)
-        if form.is_valid():
-            enrollment = request.POST.get('enrollment2')
-            isbn = request.POST.get('isbn2')
-            
-            try:
-                student = models.StudentExtra.objects.get(enrollment=enrollment)
-                book = models.Book.objects.get(isbn=isbn)
-            except models.StudentExtra.DoesNotExist:
-                return render(request, 'library/issuebook.html', {'form': form, 'error': 'Student not found'})
-            except models.Book.DoesNotExist:
-                return render(request, 'library/issuebook.html', {'form': form, 'error': 'Book not found'})
-
-            # Kitap talebi oluştur
-            obj = models.IssuedBook()
-            obj.student = student
-            obj.book = book
-            obj.approved = False  # Admin onayı bekleniyor
-            obj.save()
-
-            return render(request, 'library/bookrequested.html')  # "Talebiniz alındı" gibi bir sayfa
-
-    return render(request, 'library/issuebook.html', {'form': form})
-
+# Öğrenciye ait ödünç alınan kitapları görüntüleme
 @login_required(login_url='studentlogin')
 def viewissuedbookbystudent(request):
     student = models.StudentExtra.objects.filter(user_id=request.user.id).first()
-    issuedbooks = models.IssuedBook.objects.filter(student=student, approved=True)
     
-    # Ödünçte olan kitapların ISBN listesi
-    issued_books_isbn = models.IssuedBook.objects.filter(status='Issued').values_list('book__isbn', flat=True)
-    
-    # Ödünçte olmayan kitaplar
-    all_books = models.Book.objects.exclude(isbn__in=issued_books_isbn)
+    # Sadece onaylanmış ve aktif kitaplar
+    issuedbooks = models.IssuedBook.objects.filter(student=student, approved=True, status='Issued')
+
+    # Onay bekleyen kitap istekleri
+    pendingbooks = models.IssuedBook.objects.filter(student=student, approved=False, status='Pending')
+
+    # İstek gönderilmiş kitapların ISBN'leri (onaylı veya beklemede)
+    requested_books_isbn = models.IssuedBook.objects.filter(student=student).values_list('book__isbn', flat=True)
+
+    # Tüm kitaplar içinden istek gönderilmiş kitapları çıkar
+    available_books = models.Book.objects.exclude(isbn__in=requested_books_isbn)
 
     li1 = []
     li2 = []
@@ -128,7 +100,7 @@ def viewissuedbookbystudent(request):
 
         issdate = f"{ib.issuedate.day}-{ib.issuedate.month}-{ib.issuedate.year}"
         expdate = f"{ib.expirydate.day}-{ib.expirydate.month}-{ib.expirydate.year}"
-        
+
         days = (date.today() - ib.issuedate).days
         fine = 0
         if days > 15:
@@ -140,11 +112,12 @@ def viewissuedbookbystudent(request):
     return render(request, 'library/viewissuedbookbystudent.html', {
         'li1': li1,
         'li2': li2,
-        'all_books': all_books,
-        'student': student  
+        'all_books': available_books,
+        'student': student,
+        'pendingbooks': pendingbooks  # İstersen template'te kullanabilirsin
     })
-from django.db.models import Q
 
+# Kitap talep etme
 @login_required(login_url='studentlogin')
 def issuebook(request):
     if request.method == 'POST':
@@ -155,7 +128,7 @@ def issuebook(request):
         book = models.Book.objects.filter(isbn=isbn).first()
 
         if student and book:
-            # Aynı kitap zaten istenmiş mi? (onaylı veya beklemede fark etmez)
+            # Aynı kitap zaten istenmiş mi? (onaylı veya beklemede)
             existing_request = models.IssuedBook.objects.filter(
                 student=student,
                 book=book,
