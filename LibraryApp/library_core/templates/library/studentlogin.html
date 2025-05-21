@@ -1,124 +1,175 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Member Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1920&q=80");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
+    .card {
+      background: rgba(217, 199, 161, 0.5); /* yarı saydam cam efekti */
+      backdrop-filter: blur(8px); /* cam gibi bulanıklık */
+      -webkit-backdrop-filter: blur(8px); /* Safari için */
+      padding: 60px 50px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+      color: #4b3b1b;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
-    <style type="text/css">
-    	body {
-    		color: #aa082e;
-    			background-color:#b6bde7;
-    		font-family: 'Roboto', sans-serif;
-    	}
-        .form-control {
-    		border-color: #eee;
-            min-height: 41px;
-    		box-shadow: none !important;
-    	}
-        .form-control:focus {
-    		border-color: #5cd3b4;
-    	}
-        .form-control, .btn {
-            border-radius: 3px;
-        }
-    	.signup-form {
-    		width: 500px;
-    		margin: 0 auto;
-    		padding: 30px 0;
-    	}
-        .signup-form h2 {
-    		color: #333;
-            margin: 0 0 30px 0;
-    		display: inline-block;
-    		padding: 0 30px 10px 0;
-    	    border-bottom: 3px solid #ffffff;
-        }
-        .signup-form form {
-    		color: #999;
-    		border-radius: 3px;
-        	margin-bottom: 15px;
-            background: #fff;
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-    	.signup-form .form-group {
-    		margin-bottom: 20px;
-    	}
-    	.signup-form label {
-    		font-weight: normal;
-    		font-size: 13px;
-    	}
-        .signup-form input[type="checkbox"] {
-    		margin-top: 2px;
-    	}
-        .signup-form .btn {
-            font-size: 16px;
-            font-weight: bold;
-    	background: #161df0;
-    		border: none;
-    		margin-top: 20px;
-    		min-width: 140px;
-        }
-    	.signup-form .btn:hover, .signup-form .btn:focus {
-    		background: #41cba9;
-            outline: none !important;
-    	}
-        .signup-form a {
-    		color: #2b04ff;
+    .card h2 {
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      color: #4b3b1b;
+    }
 
-    		text-decoration: underline;
-    	}
-    	.signup-form a:hover {
-    		text-decoration: none;
-    	}
-        .signup-form form a {
-    		color: #5cd3b4;
-    		text-decoration: none;
-    	}
-    	.signup-form form a:hover {
-    		text-decoration: underline;
-    	}
-    </style>
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
 
-  </head>
-  <body>
-  
-    <br>
-    <br>
-<center><h3 style=" margin-bottom: 0px;"class = 'alert alert-success'>Login As Member!</h3></center>
-    <div class="signup-form">
-        <form  method="post" class="form-horizontal">
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #4b3b1b;
+      max-width: 150px;
+    }
 
-    			<center><h2>Member Login</h2></center>
+    .form-group input {
+      width: 80%;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      border: 1px solid #b39b6e;
+      border-radius: 20px;
+      background-color: #f8f1dd;
+      color: #4b3b1b;
+      transition: border-color 0.3s ease;
+      display: block;
+      margin: 0 auto;
+      height: 30px;
+      line-height: 30px;
+    }
 
-{% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-              <label class="control-label col-xs-4">{{ field.label_tag }}</label>
-              <div class="col-xs-8">
-              {{ field }}
-               </div>
-            </div>
-            {% endfor %}
+    .form-group input:focus {
+      outline: none;
+      border-color: #7f6b3c;
+      background-color: #fffaf3;
+    }
 
-    		<div class="form-group">
-    			<div class="col-xs-8 col-xs-offset-4">
-            <button type="submit" class="btn btn-primary btn-lg">Login</button>
-    			</div>
-    		</div>
-        </form>
-    	<div class="text-center">Do not have account? <a href="studentsignup">Signup here</a></div>
-    </div>
+    .btn {
+      width: 50%;
+      padding: 8px;
+      border-radius: 25px;
+      border: 2px solid #7f6b3c;
+      background-color: transparent;
+      color: #7f6b3c;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 15px;
+      user-select: none;
+      pointer-events: none; /* başlangıçta tıklanmaz */
+      opacity: 0.6; /* pasif görünüm */
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
 
+    .btn.enabled {
+      background-color: #7f6b3c;
+      color: #f4eacc;
+      pointer-events: auto;
+      opacity: 1;
+    }
 
+    .btn.enabled:hover {
+      background-color: #5a4e28;
+      color: #f4eacc;
+      transform: scale(1.05);
+    }
 
+    .link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #4b3b1b;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
 
-  </body>
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      background-color: #f7ede1;
+      color: #5d4726;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <form method="post" id="loginForm">
+      <h2>Member Login</h2>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" autocomplete="username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn" id="loginBtn" disabled>Login</button>
+    </form>
+    <a href="studentsignup" class="link">Don't have an account? Signup here</a>
+  </div>
+
+  <script>
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('loginBtn');
+
+    function toggleButton() {
+      if(usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '') {
+        loginBtn.disabled = false;
+        loginBtn.classList.add('enabled');
+      } else {
+        loginBtn.disabled = true;
+        loginBtn.classList.remove('enabled');
+      }
+    }
+
+    usernameInput.addEventListener('input', toggleButton);
+    passwordInput.addEventListener('input', toggleButton);
+  </script>
+
+</body>
 </html>

@@ -1,268 +1,281 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Library Book Issue</title>
+<head>
+  <meta charset="utf-8" />
+  <title>Library Book Issue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style media="screen">
-  /* Başlık */
-  h3.p-3.mb-2.bg-primary.text-white {
-    font-size: 50px;
-    text-align: center;
-    background-color: #6ea8fe !important; /* Hafif açık mavi */
-    color: #1e2d3b !important; /* Koyu ama yumuşak yazı rengi */
-    padding: 20px 0 !important;
-    border-radius: 10px;
-    margin: 40px 0 30px 0;
-  }
+    body {
+      margin: 0;
+      padding: 20px;
+      background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Inter', sans-serif;
+      color: #3a2e15;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  /* Tablo genel */
-  table.redTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #fdfefe;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    overflow: hidden;
-  }
+    .container {
+      background-color: rgba(255, 255, 255, 0.4);
+      padding: 40px 50px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      max-width: 1200px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
 
-  /* Tablo başlık */
-  table.redTable thead {
-    background-color: #c4d9f8; /* Açık mavi ton */
-    color: #1e2d3b;
-  }
+    .header-banner {
+      background-color: #4b3b1b;
+      color: #fdf8ec;
+      font-weight: 700;
+      padding: 16px 24px;
+      border-radius: 20px;
+      font-size: 1.3rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      text-transform: uppercase;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 
-  table.redTable thead th {
-    padding: 12px;
-    font-size: 15px;
-    text-align: center;
-    font-weight: 600;
-  }
+    .title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.05em;
+      color: #2f2512;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+    }
 
-  /* Satırlar - çift */
-  table.redTable tbody tr:nth-child(even) {
-    background-color: #e8f0fe; /* Hafif mavi açık */
-  }
+    .tables-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-  /* Satırlar - tek */
-  table.redTable tbody tr:nth-child(odd) {
-    background-color: #ffffff; /* Beyaz */
-  }
+    .tables-container table {
+      flex: 1 1 450px;
+      max-width: 550px;
+    }
 
-  /* Hücreler */
-  table.redTable tbody td {
-    padding: 10px;
-    font-size: 14px;
-    text-align: center;
-    color: #444;
-    border-top: 1px solid #e0e0e0;
-    vertical-align: middle; /* Dikey ortalama */
-  }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: rgba(255, 255, 255, 0.35);
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #3a2e15;
+    }
 
-  /* Hover efekti */
-  table.redTable tbody tr:hover {
-    background-color: #c9d9f8;
-    transition: 0.3s;
-  }
+    thead th {
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
 
-  /* Footer */
-  table.redTable tfoot {
-    background-color: #c4d9f8;
-    color: #1e2d3b;
-    font-weight: bold;
-  }
+    thead th::before {
+      content: "📚 ";
+      font-size: 14px;
+    }
 
-  table.redTable tfoot td {
-    padding: 10px;
-    text-align: center;
-  }
+    tbody td {
+      padding: 12px;
+      font-size: 14px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      transition: background 0.3s ease;
+    }
 
-  table.redTable tfoot .links {
-    text-align: right;
-  }
+    tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+    }
 
-  table.redTable tfoot .links a {
-    display: inline-block;
-    background-color: #ffffff;
-    color: #2f4f4f;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: 500;
-    text-decoration: none;
-    border: 1px solid #c4d4df;
-  }
+    button {
+      background-color: #fff6e5;
+      color: #4b3b1b;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
 
-  table.redTable tfoot .links a:hover {
-    background-color: #f2f7fb;
-  }
+    button:hover {
+      background-color: #ebd5aa;
+      transform: translateY(-2px);
+    }
 
-  /* Buton */
-  button {
-    background-color: #5a8df6;
-    color: white;
-    padding: 8px 14px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-  }
+    img.book-cover {
+      width: 60px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
 
-  button:hover {
-    background-color: #356bfc;
-  }
+    @media (max-width: 1200px) {
+      .tables-container {
+        flex-wrap: wrap;
+      }
 
-  /* Layout - iki tablo yanyana */
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin: 0 10px;
-  }
+      .tables-container table {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin-bottom: 30px;
+      }
+    }
 
-  .col-lg-6 {
-    flex: 1 1 45%;
-    min-width: 300px;
-  }
-</style>
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 20px;
+      }
 
-  </head>
-  <body>
-    <br><br>
-    <body>
-  <br><br>
+      .title {
+        font-size: 2rem;
+      }
 
-  {% if messages %}
-    <div style="margin: 20px auto; max-width: 800px;">
+      thead th,
+      tbody td,
+      button {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-banner">📘 Book Issued To You</div>
+
+    {% if messages %}
+    <div style="margin-bottom: 25px;">
       {% for message in messages %}
-        <div style="
-          padding: 15px;
-          border-radius: 8px;
-          margin-bottom: 10px;
-          font-size: 16px;
-          font-weight: 500;
-          text-align: center;
-          {% if message.tags == 'error' %}
-            background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-          {% elif message.tags == 'warning' %}
-            background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;
-          {% elif message.tags == 'success' %}
-            background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
-          {% else %}
-            background-color: #cce5ff; color: #004085; border: 1px solid #b8daff;
-          {% endif %}
-        ">
-          {{ message }}
-        </div>
+      <div style="
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        {% if message.tags == 'error' %}
+          background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
+        {% elif message.tags == 'warning' %}
+          background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;
+        {% elif message.tags == 'success' %}
+          background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;
+        {% else %}
+          background-color: #cce5ff; color: #004085; border: 1px solid #b8daff;
+        {% endif %}
+      ">
+        {{ message }}
+      </div>
       {% endfor %}
     </div>
-  {% endif %}
+    {% endif %}
 
-    <h3 class="p-3 mb-2 bg-primary text-white">Book Issued To You !</h3>
+    <div class="tables-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Enrollment</th>
+            <th>Branch</th>
+            <th>Book Name</th>
+            <th>Book Author</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in li1 %}
+          <tr>
+            <td>{{ t.0 }}</td>
+            <td>{{ t.1 }}</td>
+            <td>{{ t.2 }}</td>
+            <td>{{ t.3 }}</td>
+            <td>{{ t.4 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-    <div class="row">
-
-      <div class="col-lg-6" style="padding-right:0px;">
-        {% if li1 %}
-        <table class="redTable">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Enrollment</th>
-              <th>Branch</th>
-              <th>Book Name</th>
-              <th>Book Author</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="7">
-                <div class="links"></div>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            {% for t in li1 %}
-            <tr>
-              <td>{{ t.0 }}</td>
-              <td>{{ t.1 }}</td>
-              <td>{{ t.2 }}</td>
-              <td>{{ t.3 }}</td>
-              <td>{{ t.4 }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      <div class="col-lg-6" style="padding-left:0px;">
-        <table class="redTable">
-          <thead>
-            <tr>
-              <th>Issue Date</th>
-              <th>Expiry Date</th>
-              <th>Fine</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <td colspan="5">
-                <div class="links"></div>
-              </td>
-            </tr>
-          </tfoot>
-          <tbody>
-            {% for t in li2 %}
-            <tr>
-              <td>{{ t.0 }}</td>
-              <td>{{ t.1 }}</td>
-              <td>
-                {% if t.3 == "Returned" %}
-                  No Fine
-                {% else %}
-                  {{ t.2 }}
-                {% endif %}
-              </td>
-              <td>{{ t.3 }}</td>
-              <td>
-                {% if t.3 == "Issued" %}
-                  <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
-                {% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% else %}
-        <h1 style="text-align:center; color:#444;">No book Issued to you</h1>
-        {% endif %}
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Issue Date</th>
+            <th>Expiry Date</th>
+            <th>Fine</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in li2 %}
+          <tr>
+            <td>{{ t.0 }}</td>
+            <td>{{ t.1 }}</td>
+            <td>{% if t.3 == "Returned" %}No Fine{% else %}{{ t.2 }}{% endif %}</td>
+            <td>{{ t.3 }}</td>
+            <td>
+              {% if t.3 == "Issued" %}
+              <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
 
-    <!-- Yeni kitap listesi ve talep formu -->
-    <br><br><br>
+    {% if not li1 %}
+    <h2 style="text-align:center; color: #594a1b; user-select:none;">No book issued to you</h2>
+    {% endif %}
 
-    <h3 class="p-3 mb-2 bg-primary text-white" style="font-size: 40px;">Library Books - Available Books for Request</h3>
+    <div class="header-banner" style="margin-top: 50px;">📚 Available Books for Request</div>
 
-    <table class="redTable" style="margin-top: 20px;">
+    <table>
       <thead>
         <tr>
-          <th>ISBN</th>
+          <th>Cover</th>
           <th>Name</th>
           <th>Author</th>
-          <th>Category</th>
+          <th>Edition</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         {% for book in all_books %}
         <tr>
-          <td>{{ book.isbn }}</td>
+          <td>
+            <img class="book-cover"
+                 src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                 alt="Book Cover"
+                 onerror="this.src='https://via.placeholder.com/60x90?text=No+Cover'" />
+          </td>
           <td>{{ book.name }}</td>
           <td>{{ book.author }}</td>
           <td>{{ book.category }}</td>
@@ -278,8 +291,6 @@
         {% endfor %}
       </tbody>
     </table>
-
-    <br><br><br><br><br><br>
-    <br><br><br>
-  </body>
+  </div>
+</body>
 </html>

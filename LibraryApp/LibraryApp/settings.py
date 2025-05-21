@@ -10,12 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Load .env variables
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -25,9 +28,6 @@ SECRET_KEY = 'django-insecure-5v-6hd@e%j#*uz_ci80gvyvg*shn&_2uh8^*3(22e8_io$n0#^
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-# Load .env variables
-load_dotenv()
 
 # Application definition
 
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'LibraryApp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,15 +73,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
-import os
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': os.getenv('MYSQL_HOST', 'localhost'),  # Burada 'localhost' ya da 'db' olabilir, ortamına göre değiştir
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
         'PORT': '3306',
     }
 }
@@ -113,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'  # İstersen 'Europe/Istanbul' yapabilirsin
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -123,8 +121,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# E-posta ayarları
-
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
@@ -134,26 +131,10 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 LOGIN_REDIRECT_URL = '/afterlogin'
 
-# CRON_CLASSES = [
-#     "library_core.cron.SendReminderEmailsCronJob",
-# ]
-
-# ------------------------
-# CELERY AYARLARI (YENİ EKLENDİ)
-# ------------------------
-
-# Celery Broker (Redis varsayımı)
+# Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
-
-# (Opsiyonel) Celery sonuçları backend
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-
-# Zaman dilimi (gerekiyorsa değiştir)
-CELERY_TIMEZONE = 'UTC'  # veya 'Europe/Istanbul'
-
-# Görev veri formatı ayarları
+CELERY_TIMEZONE = 'UTC'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-
-# Celery Beat scheduler kullanımı
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

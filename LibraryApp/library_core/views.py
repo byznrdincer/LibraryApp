@@ -8,6 +8,7 @@ from . import forms, models
 from django.contrib import messages
 from .models import StudentExtra
 from django.conf import settings
+from .models import StudentExtra, Book  
 # Ana sayfa
 def home_view(request):
     #if request.user.is_authenticated:
@@ -50,12 +51,17 @@ def studentsignup_view(request):
 def is_student(user):
     return user.groups.filter(name='STUDENT').exists()
 
+
+
 def afterlogin_view(request):
     if request.user.groups.filter(name='STUDENT').exists():
         student = get_object_or_404(StudentExtra, user=request.user)
+        all_books = Book.objects.all()  # Tüm kitapları çekiyoruz
+
         context = {
             'student': student,
-            'user': request.user
+            'user': request.user,
+            'all_books': all_books,   # Kitapları template'e yolluyoruz
         }
         return render(request, 'library/studentafterlogin.html', context)
 
