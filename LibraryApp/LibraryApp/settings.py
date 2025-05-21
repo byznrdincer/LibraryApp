@@ -11,22 +11,23 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-5v-6hd@e%j#*uz_ci80gvyvg*shn&_2uh8^*3(22e8_io$n0#^'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Load .env variables
+load_dotenv()
 
 # Application definition
 
@@ -39,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'library_core',
-    'django_cron',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -72,31 +73,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
+import os
 
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-        
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'library_app',  # Veritabanı ismini doğru yazdığından emin ol
-        'USER': 'root',  # Kullanıcı adı doğru mu?
-        'PASSWORD': '12345',  # Şifre doğru mu?
-        'HOST': 'localhost',
+        'NAME': 'library_app',
+        'USER': 'root',
+        'PASSWORD': '12345',
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),  # Burada 'localhost' ya da 'db' olabilir, ortamına göre değiştir
         'PORT': '3306',
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -113,46 +111,49 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'  # İstersen 'Europe/Istanbul' yapabilirsin
 
 USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# E-mail ayarları
-import os
-from dotenv import load_dotenv
-
-# .env dosyasını yükle
-load_dotenv()
 
 # E-posta ayarları
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'  # .env'de 'True' ya da 'False' olarak yazılabilir
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
 LOGIN_REDIRECT_URL = '/afterlogin'
-CRON_CLASSES = [
-    "library_core.cron.SendReminderEmailsCronJob",
-]
 
+# CRON_CLASSES = [
+#     "library_core.cron.SendReminderEmailsCronJob",
+# ]
 
+# ------------------------
+# CELERY AYARLARI (YENİ EKLENDİ)
+# ------------------------
 
+# Celery Broker (Redis varsayımı)
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+# (Opsiyonel) Celery sonuçları backend
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+# Zaman dilimi (gerekiyorsa değiştir)
+CELERY_TIMEZONE = 'UTC'  # veya 'Europe/Istanbul'
+
+# Görev veri formatı ayarları
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Celery Beat scheduler kullanımı
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
