@@ -65,10 +65,11 @@ DATABASES = {
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': os.getenv('MYSQL_HOST', 'mysql-db-adyr'),  # Burada mysql-db-adyr olmalı
+        'HOST': 'mysql-db-adyr',  # Burada direkt host adresini yazdık
         'PORT': '3306',
     }
 }
+
 
 
 # Redis cache
