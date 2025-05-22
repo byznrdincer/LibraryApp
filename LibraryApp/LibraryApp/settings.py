@@ -65,7 +65,7 @@ DATABASES = {
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': 'mysql-db-adyr',  # Burada direkt host adresini yazdık
+        'HOST': 'db',  
         'PORT': '3306',
     }
 }
