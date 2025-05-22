@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - mysql-db-adyr.render.com
     environment:
       - MYSQL_HOST=db
       - DJANGO_RUNNING_IN_DOCKER=true

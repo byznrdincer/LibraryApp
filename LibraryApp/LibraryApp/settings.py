@@ -65,7 +65,7 @@ DATABASES = {
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': 'db',  
+        'HOST': 'mysql-db-adyr.render.com',  
         'PORT': '3306',
     }
 }
