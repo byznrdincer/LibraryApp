@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <title>Library Book Issue</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       padding: 20px;
@@ -21,7 +20,6 @@
       align-items: center;
       justify-content: center;
     }
-
     .container {
       background-color: rgba(255, 255, 255, 0.4);
       padding: 40px 50px;
@@ -35,7 +33,6 @@
       flex-direction: column;
       gap: 40px;
     }
-
     .header-banner {
       background-color: #4b3b1b;
       color: #fdf8ec;
@@ -48,7 +45,6 @@
       text-transform: uppercase;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-
     .title {
       font-size: 2.6rem;
       font-weight: 800;
@@ -58,19 +54,16 @@
       text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
       text-transform: uppercase;
     }
-
     .tables-container {
       display: flex;
       gap: 30px;
       flex-wrap: wrap;
       justify-content: center;
     }
-
     .tables-container table {
       flex: 1 1 450px;
       max-width: 550px;
     }
-
     table {
       width: 100%;
       border-collapse: separate;
@@ -82,7 +75,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #3a2e15;
     }
-
     thead th {
       padding: 14px;
       font-size: 15px;
@@ -93,12 +85,10 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-
     thead th::before {
       content: "📚 ";
       font-size: 14px;
     }
-
     tbody td {
       padding: 12px;
       font-size: 14px;
@@ -106,12 +96,10 @@
       border-top: 1px solid rgba(255, 255, 255, 0.15);
       transition: background 0.3s ease;
     }
-
     tbody tr:hover {
       background-color: rgba(255, 255, 255, 0.2);
       cursor: pointer;
     }
-
     button {
       background-color: #fff6e5;
       color: #4b3b1b;
@@ -125,12 +113,10 @@
       transition: 0.3s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
-
     button:hover {
       background-color: #ebd5aa;
       transform: translateY(-2px);
     }
-
     img.book-cover {
       width: 60px;
       height: 90px;
@@ -138,28 +124,23 @@
       border-radius: 6px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-
     @media (max-width: 1200px) {
       .tables-container {
         flex-wrap: wrap;
       }
-
       .tables-container table {
         flex: 1 1 100%;
         max-width: 100%;
         margin-bottom: 30px;
       }
     }
-
     @media (max-width: 768px) {
       .container {
         padding: 30px 20px;
       }
-
       .title {
         font-size: 2rem;
       }
-
       thead th,
       tbody td,
       button {
@@ -238,11 +219,17 @@
           <tr>
             <td>{{ t.0 }}</td>
             <td>{{ t.1 }}</td>
-            <td>{% if t.3 == "Returned" %}No Fine{% else %}{{ t.2 }}{% endif %}</td>
+            <td>
+              {% if t.3 == "Returned" %}
+                No Fine
+              {% else %}
+                {{ t.2 }}
+              {% endif %}
+            </td>
             <td>{{ t.3 }}</td>
             <td>
               {% if t.3 == "Issued" %}
-              <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
+                <button onclick="location.href='{% url 'returnbook' t.4 %}'" type="button">Return</button>
               {% endif %}
             </td>
           </tr>
@@ -255,15 +242,15 @@
     <h2 style="text-align:center; color: #594a1b; user-select:none;">No book issued to you</h2>
     {% endif %}
 
-    <div class="header-banner" style="margin-top: 50px;"> Available Books for Request</div>
+    <div class="header-banner" style="margin-top: 50px;">📚 Available Books for Request</div>
 
     <table>
       <thead>
         <tr>
-          <th>Book</th>
+          <th>Cover</th>
           <th>Name</th>
           <th>Author</th>
-          <th>Category</th>
+          <th>Edition</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -274,7 +261,7 @@
             <img class="book-cover"
                  src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
                  alt="Book Cover"
-                 onerror="this.src='https://via.placeholder.com/60x90?text=No+Cover'" />
+               onerror="this.onerror=null; this.src='https://via.placeholder.com/60x90?text=No+Cover';" />
           </td>
           <td>{{ book.name }}</td>
           <td>{{ book.author }}</td>
