@@ -2,14 +2,13 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()  # Localde .env dosyasını yükler
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # GÜVENLİK
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  # Default dev key
-DEBUG = os.getenv('DEBUG', 'True') == 'True'  # 'True' veya 'False' stringi
-
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # UYGULAMALAR
@@ -37,7 +36,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLS ve TEMPLATES
+# URL ve TEMPLATE
 ROOT_URLCONF = 'LibraryApp.urls'
 
 TEMPLATES = [
@@ -58,15 +57,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
-# DATABASE AYARLARI
+# ORTAMA GÖRE VERİTABANI AYARI
+if os.getenv('RENDER', 'False') == 'True':
+    MYSQL_HOST = os.getenv('MYSQL_HOST_RENDER', 'mysql-db-adyr')
+    MYSQL_PORT = os.getenv('MYSQL_PORT_RENDER', '3306')
+else:
+    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+    MYSQL_PORT = os.getenv('MYSQL_PORT', '3306')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('MYSQL_NAME', 'library_app'),
         'USER': os.getenv('MYSQL_USER', 'root'),
         'PASSWORD': os.getenv('MYSQL_PASSWORD', '12345'),
-        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
-        'PORT': os.getenv('MYSQL_PORT', '3306'),
+        'HOST': MYSQL_HOST,
+        'PORT': MYSQL_PORT,
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
@@ -81,20 +87,20 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# DİL ve ZAMAN
+# DİL & ZAMAN
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# STATİK DOSYALAR (Render için WhiteNoise)
+# STATİK
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# E-POSTA AYARLARI
+# E-POSTA
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
@@ -102,10 +108,10 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 
-# GİRİŞ YÖNLENDİRME
+# GİRİŞ
 LOGIN_REDIRECT_URL = '/afterlogin'
 
-# CELERY AYARLARI
+# CELERY
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', '')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', '')
 CELERY_TIMEZONE = 'UTC'
