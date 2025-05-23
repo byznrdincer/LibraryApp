@@ -1,1 +1,2 @@
-gunicorn LibraryApp.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --chdir LibraryApp --log-level debug --timeout 120
+web: gunicorn LibraryApp.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120 --log-level debug --chdir LibraryApp
+
