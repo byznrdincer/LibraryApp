@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mysql-db-adyr
+      - db
     environment:
       - MYSQL_HOST=mysql-db-adyr
       - DJANGO_RUNNING_IN_DOCKER=true

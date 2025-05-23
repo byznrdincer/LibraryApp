@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'library_core',
     'django_celery_beat',
+    
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,7 @@ DATABASES = {
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': 'mysql-db-adyr',  
+        'HOST': 'db',  
         'PORT': '3306',
     }
 }
