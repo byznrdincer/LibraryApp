@@ -1,22 +1,14 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
-import dj_database_url  # ✅ Heroku için
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load .env variables
-load_dotenv()
+# GÜVENLİK
+SECRET_KEY = 'E1Om-ZK2xdN-kge_XbopKZJvbROYqb7xp8rHy2D2Db9vTjYr5u-CEURnbpt30uWhHV0'
+DEBUG = False
+ALLOWED_HOSTS = ['libraryapp-0eir.onrender.com']
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
-
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
-ALLOWED_HOSTS = ['*']  # Yayına aldıktan sonra: ['yourapp.heroku.com']
-
-# Application definition
+# UYGULAMALAR
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,14 +16,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
     'library_core',
     'django_celery_beat',
+    'django_extensions',
 ]
 
+# MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ WhiteNoise
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -40,6 +33,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URLS ve TEMPLATES
 ROOT_URLCONF = 'LibraryApp.urls'
 
 TEMPLATES = [
@@ -60,26 +54,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
-# DATABASES ayarı (Heroku için dj-database-url + Lokal MySQL)
+# ✅ MySQL AYARI (Render ortamı için localhost DEĞİL!)
 DATABASES = {
-    'default': dj_database_url.config(
-        default='mysql://root:12345@localhost:3306/library_app',
-        conn_max_age=600,
-        ssl_require=False
-    )
-}
-
-# Redis cache (lokalde çalışmazsa kaldırabilirsin)
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'library_app',
+        'USER': 'root',
+        'PASSWORD': '12345',
+        'HOST': 'mysql-db',  # Render'da MySQL servisine verilen isim
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
+# PAROLA VALIDATORLERİ
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -87,32 +77,33 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# DİL ve ZAMAN
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Statik dosyalar ayarı
+# ✅ STATİK DOSYA AYARI (Render için WhiteNoise)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email ayarları
+# ✅ GMAIL SMTP AYARI
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'beyzanurdincer502@gmail.com'
+EMAIL_HOST_PASSWORD = 'Gmail-uygulama-şifren-buraya'  # Gerçek şifre değil, uygulama şifresi
 
-# Login sonrası yönlendirme
+# ✅ GİRİŞ YÖNLENDİRME
 LOGIN_REDIRECT_URL = '/afterlogin'
 
-# Celery ayarları
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# ✅ CELERY (Redis Render servisine göre ayarlandı)
+CELERY_BROKER_URL = 'redis://default:password@redis:6379/0'  # 'redis' burada Render servis adı
+CELERY_RESULT_BACKEND = 'redis://default:password@redis:6379/0'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
