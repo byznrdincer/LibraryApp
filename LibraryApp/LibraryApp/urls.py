@@ -19,7 +19,7 @@ from django.urls import path
 from library_core import views
 from django.contrib.auth.views import LoginView,LogoutView
 from django.contrib.auth import views as auth_views
-from library_core import simple_test
+from library_core.views import simple_test
 
 urlpatterns = [
     path('test/', simple_test),
