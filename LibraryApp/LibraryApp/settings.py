@@ -1,12 +1,16 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()  # Localde .env dosyasını yükler
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # GÜVENLİK
-SECRET_KEY = 'E1Om-ZK2xdN-kge_XbopKZJvbROYqb7xp8rHy2D2Db9vTjYr5u-CEURnbpt30uWhHV0'
-DEBUG = False
-ALLOWED_HOSTS = ['libraryapp-0eir.onrender.com']
+SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')  # Default dev key
+DEBUG = os.getenv('DEBUG', 'True') == 'True'  # 'True' veya 'False' stringi
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
 # UYGULAMALAR
 INSTALLED_APPS = [
@@ -54,15 +58,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
-# ✅ MySQL AYARI (Render ortamı için localhost DEĞİL!)
+# DATABASE AYARLARI
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'library_app',
-        'USER': 'root',
-        'PASSWORD': '12345',
-        'HOST': 'mysql-db-adyr',  # Render'da MySQL servisine verilen isim
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_NAME', 'library_app'),
+        'USER': os.getenv('MYSQL_USER', 'root'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', '12345'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
@@ -83,27 +87,27 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ✅ STATİK DOSYA AYARI (Render için WhiteNoise)
+# STATİK DOSYALAR (Render için WhiteNoise)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ✅ GMAIL SMTP AYARI
+# E-POSTA AYARLARI
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'beyzanurdincer502@gmail.com'
-EMAIL_HOST_PASSWORD = 'Gmail-uygulama-şifren-buraya'  # Gerçek şifre değil, uygulama şifresi
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 
-# ✅ GİRİŞ YÖNLENDİRME
+# GİRİŞ YÖNLENDİRME
 LOGIN_REDIRECT_URL = '/afterlogin'
 
-# ✅ CELERY (Redis Render servisine göre ayarlandı)
-CELERY_BROKER_URL = 'redis://default:password@redis:6379/0'  # 'redis' burada Render servis adı
-CELERY_RESULT_BACKEND = 'redis://default:password@redis:6379/0'
+# CELERY AYARLARI
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', '')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', '')
 CELERY_TIMEZONE = 'UTC'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
