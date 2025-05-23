@@ -61,7 +61,7 @@ DATABASES = {
         'NAME': 'library_app',
         'USER': 'root',
         'PASSWORD': '12345',
-        'HOST': 'mysql-db',  # Render'da MySQL servisine verilen isim
+        'HOST': 'mysql-db-adyr',  # Render'da MySQL servisine verilen isim
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
