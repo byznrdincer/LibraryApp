@@ -8,8 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # GÜVENLİK
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
 
 # UYGULAMALAR
 INSTALLED_APPS = [
@@ -59,11 +59,11 @@ WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
 # ORTAMA GÖRE VERİTABANI AYARI
 if os.getenv('RENDER', 'False') == 'True':
-    MYSQL_HOST = os.getenv('MYSQL_HOST_RENDER', 'mysql-db-adyr')
-    MYSQL_PORT = os.getenv('MYSQL_PORT_RENDER', '3306')
+    MYSQL_HOST = os.getenv('MYSQL_HOST_RENDER', 'mysql-db-adyr.onrender.com')
+    MYSQL_PORT = int(os.getenv('MYSQL_PORT_RENDER', '3306'))
 else:
     MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
-    MYSQL_PORT = os.getenv('MYSQL_PORT', '3306')
+    MYSQL_PORT = int(os.getenv('MYSQL_PORT', '3306'))
 
 DATABASES = {
     'default': {
