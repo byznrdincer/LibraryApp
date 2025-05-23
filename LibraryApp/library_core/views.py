@@ -164,3 +164,8 @@ def issuebook(request):
 
     else:
         return redirect('viewissuedbookbystudent')
+# views.py içinde
+from django.http import HttpResponse
+
+def simple_test(request):
+    return HttpResponse("Hello, Render!")

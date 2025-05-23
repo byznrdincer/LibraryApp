@@ -19,8 +19,10 @@ from django.urls import path
 from library_core import views
 from django.contrib.auth.views import LoginView,LogoutView
 from django.contrib.auth import views as auth_views
+from library_core import simple_test
 
 urlpatterns = [
+    path('test/', simple_test),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', views.home_view, name='home_view'),
