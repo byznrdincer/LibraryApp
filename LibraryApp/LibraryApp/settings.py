@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url  # ✅ Heroku için
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -8,12 +9,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Load .env variables
 load_dotenv()
 
-# SECRET_KEY .env dosyasından okunacak
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# ✅ Yayın ortamı için ayarlar
-DEBUG = True
-ALLOWED_HOSTS = ['*']  # Yayına aldıktan sonra: ['yourapp.onrender.com']
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+ALLOWED_HOSTS = ['*']  # Yayına aldıktan sonra: ['yourapp.heroku.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -26,11 +27,11 @@ INSTALLED_APPS = [
     'django_extensions',
     'library_core',
     'django_celery_beat',
-    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,21 +60,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'LibraryApp.wsgi.application'
 
-# Database
+# DATABASES ayarı (Heroku için dj-database-url + Lokal MySQL)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'library_app',
-        'USER': 'root',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',  
-        'PORT': '3306',
-    }
+    'default': dj_database_url.config(
+        default='mysql://root:12345@localhost:3306/library_app',
+        conn_max_age=600,
+        ssl_require=False
+    )
 }
 
-
-
-# Redis cache
+# Redis cache (lokalde çalışmazsa kaldırabilirsin)
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -84,7 +80,6 @@ CACHES = {
     }
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -92,20 +87,19 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Localization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ✅ Statik dosyalar (Render için)
-STATIC_URL = 'static/'
+# Statik dosyalar ayarı
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email settings
+# Email ayarları
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
@@ -113,10 +107,10 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-# Login redirect
+# Login sonrası yönlendirme
 LOGIN_REDIRECT_URL = '/afterlogin'
 
-# Celery settings
+# Celery ayarları
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 CELERY_TIMEZONE = 'UTC'
