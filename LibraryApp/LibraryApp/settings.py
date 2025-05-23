@@ -62,7 +62,7 @@ if os.getenv('RENDER', 'False') == 'True':
     MYSQL_HOST = os.getenv('MYSQL_HOST_RENDER', 'mysql-db-adyr.onrender.com')
     MYSQL_PORT = int(os.getenv('MYSQL_PORT_RENDER', '3306'))
 else:
-    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+    MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
     MYSQL_PORT = int(os.getenv('MYSQL_PORT', '3306'))
 
 DATABASES = {
