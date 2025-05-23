@@ -8,8 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # GÜVENLİK
 SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost').split(',')
+DEBUG =True
+ALLOWED_HOSTS = ['*']
 
 # UYGULAMALAR
 INSTALLED_APPS = [
