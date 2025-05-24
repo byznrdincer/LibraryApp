@@ -66,19 +66,32 @@ else:
     MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
     MYSQL_PORT = int(os.getenv('MYSQL_PORT', '3306'))
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('MYSQL_NAME', 'library_app'),
+#         'USER': os.getenv('MYSQL_USER', 'root'),
+#         'PASSWORD': os.getenv('MYSQL_PASSWORD', '12345'),
+#         'HOST': MYSQL_HOST,
+#         'PORT': MYSQL_PORT,
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_NAME', 'library_app'),
-        'USER': os.getenv('MYSQL_USER', 'root'),
-        'PASSWORD': os.getenv('MYSQL_PASSWORD', '12345'),
-        'HOST': MYSQL_HOST,
-        'PORT': MYSQL_PORT,
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'NAME': os.getenv('MYSQL_NAME'),
+        'USER': os.getenv('MYSQL_USER'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'HOST': os.getenv('MYSQL_HOST', '127.0.0.1'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
     }
 }
+
 
 # PAROLA VALIDATORLERİ
 AUTH_PASSWORD_VALIDATORS = [
