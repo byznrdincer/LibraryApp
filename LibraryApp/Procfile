@@ -1,2 +1,3 @@
-web: gunicorn LibraryApp.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --threads 3 --timeout 120 --worker-class gthread --log-level debug 
+web: gunicorn LibraryApp.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --threads 3 --timeout 120 --worker-class gthread --log-level debug --chdir LibraryApp
+
 
