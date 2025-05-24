@@ -14,7 +14,7 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn LibraryApp.wsgi:application --bind 0.0.0.0:8000 --workers 3 --worker-class gevent --timeout 120
     volumes:
       - .:/app
     working_dir: /app
@@ -23,8 +23,13 @@ services:
     depends_on:
       - db
     environment:
-      - MYSQL_HOST=mysql-db-adyr
+      - MYSQL_HOST=db
       - DJANGO_RUNNING_IN_DOCKER=true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
 
 volumes:
   db_data:
